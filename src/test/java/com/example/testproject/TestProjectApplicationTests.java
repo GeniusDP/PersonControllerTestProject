@@ -30,8 +30,7 @@ class TestProjectApplicationTests {
     mvc.perform(get("/api/person-management/people")
           .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk())
-      .andExpect(content()
-        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+      .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
       .andExpect(jsonPath("$[0].firstName").value("Bogdan"))
       .andExpect(jsonPath("$[0].lastName").value("Zaranik"))
       .andExpect(jsonPath("$[1].firstName").value("Maxim"))
@@ -43,8 +42,7 @@ class TestProjectApplicationTests {
     mvc.perform(get("/api/person-management/people/1")
           .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk())
-      .andExpect(content()
-        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+      .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
       .andExpect(jsonPath("$.firstName").value("Bogdan"))
       .andExpect(jsonPath("$.lastName").value("Zaranik"))
       .andExpect(jsonPath("$.ageInYears").value(20L));
@@ -55,8 +53,7 @@ class TestProjectApplicationTests {
     mvc.perform(get("/api/person-management/people/-1000")
           .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isNotFound())
-      .andExpect(content()
-        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+      .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
       .andExpect(jsonPath("$.description").value("Person was not found"));
   }
 
