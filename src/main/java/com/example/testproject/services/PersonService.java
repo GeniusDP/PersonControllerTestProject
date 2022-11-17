@@ -5,22 +5,33 @@ import com.example.testproject.dtos.request.PersonWithAgeDto;
 import com.example.testproject.entities.Person;
 import com.example.testproject.exceptions.PersonNotFoundException;
 import com.example.testproject.repositories.PersonRepository;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PersonService {
 
-  @Autowired
-  private PersonRepository repository;
+  private final PersonRepository repository;
+  private final ChronoUtilityService chronoUtilityService;
 
   public List<PersonWithAgeDto> getAll() {
     return repository.findAll().stream()
-      .map(PersonWithAgeDto::new)
+      .map(person -> {
+        long ageInYears = calcPersonAge(person.getDateOfBirth());
+        String firstName = person.getFirstName();
+        String lastName = person.getLastName();
+        return new PersonWithAgeDto(firstName, lastName, ageInYears);
+      })
       .toList();
+  }
+
+  private long calcPersonAge(LocalDate dateOfBirth){
+    LocalDate now = LocalDate.now();
+    return chronoUtilityService.getYearsDifference(dateOfBirth, now);
   }
 
   public PersonWithAgeDto getPersonById(Long personId) {
@@ -29,7 +40,10 @@ public class PersonService {
       throw new PersonNotFoundException();
     }
     Person person = personOptional.get();
-    return new PersonWithAgeDto(person);
+    long ageInYears = calcPersonAge(person.getDateOfBirth());
+    String firstName = person.getFirstName();
+    String lastName = person.getLastName();
+    return new PersonWithAgeDto(firstName, lastName, ageInYears);
   }
 
   public Person createPerson(PersonDto dto) {
