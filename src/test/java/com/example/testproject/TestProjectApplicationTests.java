@@ -1,5 +1,6 @@
 package com.example.testproject;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,8 +27,7 @@ class TestProjectApplicationTests {
 
   @Test
   void getAllPeople() throws Exception {
-    mvc.perform(
-        MockMvcRequestBuilders.get("/api/person-management/people")
+    mvc.perform(get("/api/person-management/people")
           .contentType(MediaType.APPLICATION_JSON))
       .andExpect(status().isOk())
       .andExpect(content()
@@ -37,5 +37,28 @@ class TestProjectApplicationTests {
       .andExpect(jsonPath("$[1].firstName").value("Maxim"))
       .andExpect(jsonPath("$[1].lastName").value("Borisov"));
   }
+
+  @Test
+  void getPersonById() throws Exception {
+    mvc.perform(get("/api/person-management/people/1")
+          .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isOk())
+      .andExpect(content()
+        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.firstName").value("Bogdan"))
+      .andExpect(jsonPath("$.lastName").value("Zaranik"))
+      .andExpect(jsonPath("$.ageInYears").value(20L));
+  }
+
+  @Test
+  void noSuchPersonFound() throws Exception {
+    mvc.perform(get("/api/person-management/people/-1000")
+          .contentType(MediaType.APPLICATION_JSON))
+      .andExpect(status().isNotFound())
+      .andExpect(content()
+        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+      .andExpect(jsonPath("$.description").value("Person was not found"));
+  }
+
 
 }
