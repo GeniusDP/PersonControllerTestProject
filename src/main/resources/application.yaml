@@ -1,18 +1,24 @@
 server:
   port: 8080
-  servlet:
-    context-path: /api/person-management
 spring:
+  h2:
+    console:
+      enabled: true
   datasource:
-    url: "jdbc:h2:mem:test"
+    url: "jdbc:h2:mem:testdb"
+    driverClassName: org.h2.Driver
+    username: "sa"
+    password: "root"
   jpa:
+    database-platform: "org.hibernate.dialect.H2Dialect"
     properties:
       hibernate:
         dialect: "org.hibernate.dialect.H2Dialect"
       hibernate.format_sql: true
     show-sql: true
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create
+    defer-datasource-initialization: true
   application:
     name: "TodoApp"
     version: 1.0
@@ -27,3 +33,5 @@ springdoc:
   contact:
     name: "Bogdan Zaranik"
     email: "zaranikbz@gmail.com"
+  swagger-ui:
+    path: "/swagger"
