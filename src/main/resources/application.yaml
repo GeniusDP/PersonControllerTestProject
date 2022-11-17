@@ -20,10 +20,10 @@ spring:
       ddl-auto: create
     defer-datasource-initialization: true
   application:
-    name: "TodoApp"
+    name: "Person management system"
     version: 1.0
     description: "
-      My the pet project with Spring Boot. 
+      My test project with Spring Boot. 
       Used technologies: 
         Spring Web, 
         Spring Data JPA, 
