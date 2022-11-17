@@ -58,7 +58,7 @@ public class PersonController {
   }
 
   @DeleteMapping("/{personId}")
-  @ResponseStatus(HttpStatus.CREATED)
+  @ResponseStatus(HttpStatus.NO_CONTENT)
   @Operation(summary = DELETE_PERSON_BY_ID_SUMMARY, description = DELETE_PERSON_BY_ID_DESCRIPTION)
   @ApiResponse(responseCode = HTTP_STATUS_NO_CONTENT, description = PERSON_SUCCESSFULLY_DELETED)
   @ApiResponse(responseCode = HTTP_STATUS_NOT_FOUND, description = PERSON_NOT_FOUND)
